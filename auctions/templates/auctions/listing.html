@@ -1,0 +1,53 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing: {{ listing.name }}</h2>
+    <form action="{% url 'watchlist' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{ listing.id }}" name="item">
+        <input type="submit" value="Watchlist">
+    </form>
+    {% if listing.image %}
+        <div>
+            <img src="{{ listing.image }}">
+        </div>
+    {% endif %}
+    <div>
+        Description: {{ listing.description }}
+    </div>
+    <div>
+        Price: ${{ listing.price }}
+    </div>
+    <div>
+        Category: {{ listing.category }}
+    </div>
+
+    <form action="{% url 'bid' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="listing" value="{{ listing.id }}" >
+        <input type="number" placeholder="Bid: $" name="bid" required>
+        <input type="submit" value="Place Bid">
+    </form>
+    <hr/>
+    <h3>Bids:</h3>
+    <ul>
+    {% for bid in bids %}
+        <li>${{ bid.amount }}</li>
+    {% endfor %}
+    </ul>
+    <hr/>
+
+    <h3>Comments:</h3>
+    {% for comment in comments %}
+        <div>
+            {{ comment.comment }}
+        </div>
+    {% endfor %}
+
+    <form action="{% url 'comment' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="listing" value="{{ listing.id }}" >
+        <textarea name="comment"  placeholder="Please add comment here" required></textarea>
+        <input type="submit" value="Comment">
+    </form>
+{% endblock %}

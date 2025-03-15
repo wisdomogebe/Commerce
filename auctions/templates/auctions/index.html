@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    <ul>
+        {% for listing in listings %}
+        <div style="border: 0.5px solid blanchedalmond; margin: 10px;">
+            <a href="{% url 'listing' listing.id %}">
+                <ul>
+                    {{ listing.name }}
+                    <li><img src="{{ listing.image }}"></li>
+                    <li>Description: {{ listing.description }}</li>
+                    <li>${{ listing.price }}</li>
+                </ul>
+            </a>
+        </div>
+        {% endfor %}
+    </ul>
+    
+    <a href="{% url 'create' %}">Create new Listing</a>
+{% endblock %}
