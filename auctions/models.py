@@ -25,7 +25,3 @@ class Bid(models.Model):
 class Comment(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comment_item")
     comment = models.CharField(max_length=200, null=True)
-
-# Declaration of the Category model
-class Category(models.Model):
-    name = models.CharField(max_length=64, unique=True, null=False)

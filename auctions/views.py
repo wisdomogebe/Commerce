@@ -6,10 +6,10 @@ from django.shortcuts import render
 from django.urls import reverse
 
 # Importing our models
-from .models import Bid, Category, Comment, Listing, User
+from .models import Bid, Comment, Listing, User
 
-# Declaration of the categories variable
-# categories = set()
+# Declaration of the categories Global variable
+categories = set()
 
 
 def index(request):
@@ -83,8 +83,7 @@ def create_listing(request):
         category = request.POST.get("category")
         new_listing = Listing(name=title, description=description, price=price, image=image, category=category)
         new_listing.save()
-        new_category = Category(name=category)
-        new_category.save()
+        categories.add(category)
         return HttpResponseRedirect(reverse("index"))
     # Renders the create listing page when there is a GET method
     return render(request, "auctions/create_listing.html")
@@ -145,9 +144,8 @@ def comment_view(request):
 
 # The categories view for rendering the categories page
 def categories_view(request):
-    categories = Category.objects.all()
     return render(request, "auctions/categories.html", {
-        'categories': categories,
+        "categories" : categories,
     })
 
 def category_view(request, category_name):
